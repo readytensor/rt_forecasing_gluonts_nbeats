@@ -104,6 +104,7 @@ class Forecaster:
         """
 
         self.data_schema = data_schema
+        self.context_length = context_length
         self.random_state = random_state
         self.use_exogenous = use_exogenous and data_schema.future_covariates
         self._is_trained = False
@@ -122,11 +123,6 @@ class Forecaster:
         trainer = Trainer(
             epochs=epochs, learning_rate=learning_rate, weight_decay=weight_decay
         )
-
-        if not self.use_exogenous:
-            num_covariates = 0
-        else:
-            num_covariates = len(data_schema.future_covariates)
 
         self.model = NBEATSEstimator(
             trainer=trainer,
